@@ -7,5 +7,6 @@ The image is available only inside the university's network at the main place an
 
   * Url of the site: http://aws.unibz.it/mensawebcam/
   * Url of the image: http://aws.unibz.it/mensawebcam/StreamImage.aspx
+  * Sample image: ImageSample
   * Source code of successful result: SourceCodeOk
   * Source code of unsuccessful result: SourceCodeNo
