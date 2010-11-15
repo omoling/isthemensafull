@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Is the Mensa full?</string>
+    <string name="refresh">Refresh</string>
+    <string name="about">About</string>
+    
+    <string name="about_url">http://code.google.com/p/isthemensafull/?client=android</string>
 </resources>
