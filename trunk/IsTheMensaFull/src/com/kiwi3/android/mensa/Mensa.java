@@ -1,20 +1,20 @@
- /*  *********************************************************************  **
- **  Copyright (C) 2010 Omar Moling			 								**
- **											                                **
- **  This program is free software; you can redistribute it and/or modify   ** 
- **  it under the terms of the GNU General Public License as published by   ** 
- **  the Free Software Foundation; either version 3 of the License, or 		**
- **	 (at your option) any later version.                                    **
- **																			**
- **  This program is distributed in the hope that it will be useful,		** 
- **  but WITHOUT ANY WARRANTY; without even the implied warranty of 		**
- **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 			**
- **	 GNU General Public License for more details.							**
- **																			**
- **  You should have received a copy of the GNU General Public License 		**
- **  along with this program. If not, see <http://www.gnu.org/licenses/>.	**
- **																			**
- **  *********************************************************************  */
+ /* 
+ **  Copyright (C) 2010 Omar Moling
+ **	
+ **  This program is free software; you can redistribute it and/or modify 
+ **  it under the terms of the GNU General Public License as published by 
+ **  the Free Software Foundation; either version 3 of the License, or
+ **	 (at your option) any later version.
+ **	
+ **  This program is distributed in the hope that it will be useful, 
+ **  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ **	 GNU General Public License for more details.
+ **	
+ **  You should have received a copy of the GNU General Public License
+ **  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ **	
+ ** */
 
 package com.kiwi3.android.mensa;
 
@@ -47,6 +47,10 @@ public class Mensa extends Activity {
     //MENU
     private static final int MENU_REFRESH = Menu.FIRST;
     private static final int MENU_ABOUT = Menu.FIRST + 1;
+    private static final int MENU_PREFERENCES = Menu.FIRST + 2;
+    
+    //ACTIVITY RESULT CODES
+    private static final int SHOW_PREFERENCES = 1;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +92,9 @@ public class Mensa extends Activity {
 
 		menu.add(0, MENU_ABOUT, Menu.NONE, R.string.about)
 				.setIcon(R.drawable.ic_menu_info_details);
+		
+		menu.add(0, MENU_PREFERENCES, Menu.NONE, R.string.preferences)
+				.setIcon(R.drawable.ic_menu_preferences);
 
     	return true;
     }
@@ -104,8 +111,23 @@ public class Mensa extends Activity {
 					Uri.parse(getString(R.string.about_url))));
 			return true;
 		}
+		case (MENU_PREFERENCES): {
+			startActivityForResult(new Intent(this, Preferences.class), SHOW_PREFERENCES);
+			return true;
+		}
 		}
     	return true;
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	super.onActivityResult(requestCode, resultCode, data);
+    	switch (requestCode) {
+    	case (SHOW_PREFERENCES): {
+    		//
+    		break;
+    	}
+    	}
     }
     
     private class GetMensaImage extends AsyncTask<Void, Void, Bitmap> {
@@ -162,7 +184,7 @@ public class Mensa extends Activity {
 				Log.d(TAG, "image W x H: " + width + " x " + height);
 				
 				if (width == 1 && height == 1) {
-					Log.d(TAG, "Image is 1x1, webcam not available.");
+					Log.i(TAG, "Image is 1x1, webcam not available.");
 					Toast.makeText(getBaseContext(), "The webcam appears to be not available. Please check the instructions.", Toast.LENGTH_LONG).show();
 				}
 			}
