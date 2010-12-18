@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<CheckBoxPreference
+		android:key="@string/pref_auto_refresh_key"
+		android:title="@string/pref_auto_refresh_title"
+		android:summary="@string/pref_auto_refresh_summary" 
+		android:defaultValue="false"
+	/>
+	<ListPreference
+		android:key="@string/pref_refresh_freq_key"
+		android:dependency="@string/pref_auto_refresh_key"
+		android:title="@string/pref_refresh_freq_title"
+		android:summary="@string/pref_refresh_freq_summary"
+		android:entries="@array/pref_refresh_freq_options"
+		android:entryValues="@array/pref_refresh_freq_values"
+		android:dialogTitle="@string/pref_refresh_freq_title"
+		android:defaultValue="5"
+	/>
+</PreferenceScreen>
