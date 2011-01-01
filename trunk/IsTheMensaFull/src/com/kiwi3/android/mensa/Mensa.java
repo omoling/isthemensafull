@@ -1,5 +1,5 @@
  /* 
- **  Copyright (C) 2010 Omar Moling
+ **  Copyright (C) 2011 Omar Moling
  **	
  **  This program is free software; you can redistribute it and/or modify 
  **  it under the terms of the GNU General Public License as published by 
@@ -18,18 +18,10 @@
 
 package com.kiwi3.android.mensa;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -40,8 +32,9 @@ import android.widget.Toast;
 
 public class Mensa extends Activity {
     private static final String TAG = "Mensa";
+    
+    private MensaApp app;
 	
-    private URL url = null;
     private ImageView imageView;
     
     //MENU
@@ -57,30 +50,33 @@ public class Mensa extends Activity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "Status: onCreate");
         
+        app = (MensaApp) getApplication();
+        app.registerActivity(this);
+        
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.main);
         
         imageView = (ImageView) this.findViewById(R.id.imageview);
-        
-        try {
-        	//sample image
-        	//url = new URL("http://isthemensafull.googlecode.com/files/StreamImage.jpeg");
-        	
-        	//real url
-        	url = new URL("http://aws.unibz.it/mensawebcam/StreamImage.aspx");
-        	
-        } catch (MalformedURLException e) {
-			Log.e(TAG, e.getMessage());
-		}
         
         refreshImage();
     }
     
     private void refreshImage() {
     	Log.d(TAG, "refreshImage() called");
-    	
-    	// call task to refresh the image from the webcam
-		new GetMensaImage().execute();
+    	// start service to refresh image
+    	startService(new Intent(this, MensaService.class));
+    }
+    
+    protected void displayImage(Bitmap image) {
+    	imageView.setImageBitmap(image);
+
+		// determine if image is 1x1: means webcam is not available
+		int width = image.getWidth(), height = image.getHeight();
+		Log.d(TAG, "image W x H: " + width + " x " + height);
+		if (width == 1 && height == 1) {
+			Log.i(TAG, "Image is 1x1, webcam not available.");
+			Toast.makeText(this, "The webcam appears to be not available. Please check the instructions.", Toast.LENGTH_LONG).show();
+		}
     }
     
     @Override
@@ -124,74 +120,10 @@ public class Mensa extends Activity {
     	super.onActivityResult(requestCode, resultCode, data);
     	switch (requestCode) {
     	case (SHOW_PREFERENCES): {
-    		//
+    		// TODO
     		break;
     	}
     	}
-    }
-    
-    private class GetMensaImage extends AsyncTask<Void, Void, Bitmap> {
-
-    	@Override
-    	protected void onPreExecute() {
-    		super.onPreExecute();
-    		setProgressBarIndeterminateVisibility(true);
-    	}
-    	
-		@Override
-		protected Bitmap doInBackground(Void... params) {
-			HttpURLConnection httpConnection = null;
-			
-			try {
-				httpConnection = (HttpURLConnection) url
-						.openConnection();
-				httpConnection.setRequestMethod("GET");
-				httpConnection.connect();
-
-				int responseCode = httpConnection.getResponseCode();
-
-				if (responseCode == HttpURLConnection.HTTP_OK) {
-					InputStream in = (InputStream) httpConnection
-							.getInputStream();
-
-					Bitmap image = BitmapFactory.decodeStream(in);
-
-					return image;
-				} else {
-					Log.w(TAG, "http response code: " + responseCode);
-				}
-			} catch (MalformedURLException e) {
-				Log.e(TAG, e.getMessage());
-			} catch (IOException e) {
-				Log.e(TAG, e.getMessage());
-			} finally {
-				if (httpConnection != null) {
-					httpConnection.disconnect();
-				}
-			}
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(Bitmap result) {
-			super.onPostExecute(result);
-			
-			if (result != null) {
-				imageView.setImageBitmap(result);
-				
-				// determine if image is 1x1: means webcam is not available
-				int width = result.getWidth(), height = result.getHeight();
-				Log.d(TAG, "image W x H: " + width + " x " + height);
-				
-				if (width == 1 && height == 1) {
-					Log.i(TAG, "Image is 1x1, webcam not available.");
-					Toast.makeText(getBaseContext(), "The webcam appears to be not available. Please check the instructions.", Toast.LENGTH_LONG).show();
-				}
-			}
-			
-			setProgressBarIndeterminateVisibility(false);
-		}
-    	
     }
     
 }
