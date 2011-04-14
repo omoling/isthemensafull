@@ -20,5 +20,6 @@ As the project is being developed in my spare time, it is not possible to define
   * Release final version
 
 Further features and improvements proposals:
-  * (Possibility to save the currently shown image)
-  * (Possibility to share the currently shown image)
+  * Widget
+  * Possibility to save the currently shown image
+  * Possibility to share the currently shown image
