@@ -36,11 +36,10 @@ public class MensaApp extends Application {
 	
 	protected void displayImage(Bitmap image) {
 		try {
-			Log.d(TAG, "displayImage() called");
 			mensaActivity.displayImage(image);
 		} catch (NullPointerException e) {
 			// TODO
-			Log.e(TAG, e.getMessage());
+			Log.w(TAG, e.getMessage());
 		}
 	}
 	

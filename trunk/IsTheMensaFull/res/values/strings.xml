@@ -2,21 +2,37 @@
 <resources>
 	<!-- General strings -->
     <string name="app_name">Is the Mensa full?</string>
-    <string name="refresh">Refresh</string>
+    <!--<string name="refresh">Refresh</string> -->
+    <string name="refresh_start">Start</string>
+    <string name="refresh_stop">Stop</string>
     <string name="about">About</string>
     <string name="preferences">Settings</string>
 	
     <string name="about_url">http://code.google.com/p/isthemensafull/?client=android</string>
+    <string name="webcam_not_available_error_msg">The webcam appears to be not available.</string>
+    
+    <!-- Info dialog -->
+    <string name="pref_hide_info_dialog">PREF_INFO_DIALOG</string>
+    <string name="info_dialog_title">You should consider..</string>
+    <string name="info_dialog_content">The image will be visible only if your device is connected 
+    to the university\'s network in Bolzano (i.e. being connected to the university\'s Wi-Fi in the 
+    main building) and within the time-span the webcam is publicly available: between 11:55 AM 
+    and 2:00 PM, as written on the official website of the university.</string>
+    <string name="info_dialog_positive">I got it.</string>
+    <string name="info_dialog_negative">Next time again please.</string>
     
     <!-- Auto refresh preference -->
     <string name="pref_auto_refresh_key">PREF_AUTO_REFRESH</string>
     <string name="pref_auto_refresh_title">Auto refresh</string>
-    <string name="pref_auto_refresh_summary">Select to turn on automatic refreshing</string>
+    <string name="pref_auto_refresh_summary">Select to turn on automatic refresh.</string>
+    
+    <!-- Auto refresh pausing state -->
+    <string name="pref_pausing_auto_refresh_key">PREF_PAUSING_AUTO_REFRESH</string>
     
     <!-- Refresh frequency preference -->
     <string name="pref_refresh_freq_key">PREF_REFRESH_FREQ</string>
     <string name="pref_refresh_freq_title">Refresh frequency</string>
-    <string name="pref_refresh_freq_summary">Frequency at which to refresh automatically</string>
+    <string name="pref_refresh_freq_summary">Frequency at which to refresh automatically.</string>
     <string-array name="pref_refresh_freq_options">
     	<item>1 second</item>
     	<item>5 seconds</item>
@@ -29,5 +45,6 @@
     	<item>15</item>
     	<item>60</item>
     </string-array>
+    <string name="pref_refresh_freq_default_value">5</string>
     
 </resources>
