@@ -127,7 +127,12 @@ public class Mensa extends Activity {
     @Override
     protected void onPause() {
     	Log.d(TAG, "onPause()");
-    	unregisterReceiver(receiver);
+    	//check GetImageTask
+    	stopLastGetImageTask();
+    	//unregister receiver
+    	try {
+    		unregisterReceiver(receiver);
+    	} catch (Exception t) {}
     	//store current auto-refresh state to resume later
     	setPausingAutoRefresh(isAutoRefresh());
     	//set current auto-refresh to false
@@ -183,6 +188,8 @@ public class Mensa extends Activity {
 			return true;
 		}
 		case (MENU_REFRESH_STOP): {
+			
+			stopLastGetImageTask();
 			setAutoRefresh(false);
 			unregisterReceiver(receiver);
 			return true;
@@ -255,7 +262,7 @@ public class Mensa extends Activity {
     	
     	//call asyctask
     	if (lastGetImageTask == null || lastGetImageTask.getStatus().equals(AsyncTask.Status.FINISHED)) {
-			Log.d(TAG, "Calling task to refresh image.");
+			//Log.d(TAG, "Calling task to refresh image.");
 			lastGetImageTask = new GetImageTask();
 			lastGetImageTask.execute((Void[]) null);
 		} else {
@@ -318,6 +325,14 @@ public class Mensa extends Activity {
 			Log.w(TAG, "Could not convert frequency to integer! Setting it to 5.");
 		}
 		return refreshFrequency;
+    }
+    
+    private void stopLastGetImageTask() {
+    	if (lastGetImageTask != null) {
+    		Log.d(TAG, "Stopping lastGetImageTask");
+    		lastGetImageTask.cancel(true);
+    		lastGetImageTask = null;
+    	}
     }
     
     private class GetImageTask extends AsyncTask<Void, Void, Bitmap> {

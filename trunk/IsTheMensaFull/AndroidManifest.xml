@@ -2,7 +2,7 @@
 <manifest 
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.kiwi3.android.mensa" 
-	android:versionName="0.2 Beta" android:versionCode="4">
+	android:versionName="0.2.1 Beta" android:versionCode="5">
 	
 	<application 
 		android:icon="@drawable/icon" 
