@@ -23,3 +23,9 @@ Further features and improvements proposals:
   * Widget
   * Possibility to save the currently shown image
   * Possibility to share the currently shown image
+
+= Versions =
+
+|| *Version Code* || *Version Name* ||
+|| 4 || 0.2 Beta ||
+|| 5 || 0.2.1 Beta ||
