@@ -5,6 +5,7 @@
     <!--<string name="refresh">Refresh</string> -->
     <string name="refresh_start">Start</string>
     <string name="refresh_stop">Stop</string>
+    <string name="refresh_once">Refresh</string>
     <string name="about">About</string>
     <string name="preferences">Settings</string>
 	

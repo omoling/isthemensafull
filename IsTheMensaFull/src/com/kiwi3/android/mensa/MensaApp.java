@@ -18,14 +18,12 @@
 
 package com.kiwi3.android.mensa;
 
-import android.app.Activity;
 import android.app.Application;
-import android.graphics.Bitmap;
-import android.util.Log;
 
 public class MensaApp extends Application {
-	private static final String TAG = "MensaApp";
+	//private static final String TAG = "MensaApp";
 
+	/*
 	private Mensa mensaActivity;
 	
 	protected void registerActivity(Activity activity) {
@@ -33,12 +31,13 @@ public class MensaApp extends Application {
 		Log.d(TAG, "registering Mensa activity");
 		mensaActivity = (Mensa) activity;
 	}
+	*/
 	
+	/*
 	protected void displayImage(Bitmap image) {
 		try {
 			mensaActivity.displayImage(image);
 		} catch (NullPointerException e) {
-			// TODO
 			Log.w(TAG, e.getMessage());
 		}
 	}
@@ -48,9 +47,9 @@ public class MensaApp extends Application {
 			//to be extended in case of multiple activities
 			mensaActivity.setProgressBarIndeterminateVisibility(visible);
 		} catch (NullPointerException e) {
-			// TODO
 			Log.e(TAG, e.getMessage());
 		}
 	}
+	*/
 	
 }

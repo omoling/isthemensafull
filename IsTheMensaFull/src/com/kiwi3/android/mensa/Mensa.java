@@ -67,8 +67,9 @@ public class Mensa extends Activity {
     //MENU
     private static final int MENU_REFRESH_START 	= Menu.FIRST;
     private static final int MENU_REFRESH_STOP 		= Menu.FIRST + 1;
-    private static final int MENU_ABOUT 			= Menu.FIRST + 2;
-    private static final int MENU_PREFERENCES 		= Menu.FIRST + 3;
+    private static final int MENU_REFERSH_ONCE		= Menu.FIRST + 2;
+    private static final int MENU_ABOUT 			= Menu.FIRST + 3;
+    private static final int MENU_PREFERENCES 		= Menu.FIRST + 4;
     
     //DIALOGS
     private static final int DIALOG_INFO = 1;
@@ -84,7 +85,7 @@ public class Mensa extends Activity {
         setContentView(R.layout.main);
         
         app = (MensaApp) getApplication();
-        app.registerActivity(this);
+        //app.registerActivity(this);
         
         alarms = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         String ALARM_ACTION;
@@ -156,6 +157,8 @@ public class Mensa extends Activity {
 				.setIcon(R.drawable.ic_menu_close_clear_cancel);
 		menu.add(0, MENU_REFRESH_START, Menu.NONE, R.string.refresh_start)
 				.setIcon(R.drawable.ic_menu_play_clip);
+		menu.add(0, MENU_REFERSH_ONCE, Menu.NONE, R.string.refresh_once)
+				.setIcon(R.drawable.ic_menu_refresh);
 		menu.add(0, MENU_ABOUT, Menu.NONE, R.string.about)
 				.setIcon(R.drawable.ic_menu_info_details);
 		menu.add(0, MENU_PREFERENCES, Menu.NONE, R.string.preferences)
@@ -169,12 +172,15 @@ public class Mensa extends Activity {
     	super.onPrepareOptionsMenu(menu);
     	MenuItem refreshStart = menu.findItem(MENU_REFRESH_START);
     	MenuItem refreshStop = menu.findItem(MENU_REFRESH_STOP);
+    	MenuItem refreshOnce = menu.findItem(MENU_REFERSH_ONCE);
     	if (isAutoRefresh()) {
     		refreshStart.setVisible(false);
     		refreshStop.setVisible(true);
+    		refreshOnce.setEnabled(false);
     	} else {
     		refreshStart.setVisible(true);
     		refreshStop.setVisible(false);
+    		refreshOnce.setEnabled(true);
     	}
     	return true;
     }
@@ -188,10 +194,14 @@ public class Mensa extends Activity {
 			return true;
 		}
 		case (MENU_REFRESH_STOP): {
-			
 			stopLastGetImageTask();
 			setAutoRefresh(false);
 			unregisterReceiver(receiver);
+			return true;
+		}
+		case (MENU_REFERSH_ONCE): {
+			stopLastGetImageTask();
+			refreshImage();
 			return true;
 		}
 		case (MENU_ABOUT): {
@@ -257,12 +267,9 @@ public class Mensa extends Activity {
 			alarms.setRepeating(alartType, timeToRefresh, refreshFrequency * 1000, alarmIntent);
     	} else {
     		alarms.cancel(alarmIntent);
-    		//unregisterReceiver(receiver);
     	}
     	
-    	//call asyctask
     	if (lastGetImageTask == null || lastGetImageTask.getStatus().equals(AsyncTask.Status.FINISHED)) {
-			//Log.d(TAG, "Calling task to refresh image.");
 			lastGetImageTask = new GetImageTask();
 			lastGetImageTask.execute((Void[]) null);
 		} else {
@@ -340,7 +347,7 @@ public class Mensa extends Activity {
     	@Override
     	protected void onPreExecute() {
     		super.onPreExecute();
-    		app.setProgressBarIndeterminateVisibility(true);
+    		setProgressBarIndeterminateVisibility(true);
     	}
     	
 		@Override
@@ -361,7 +368,7 @@ public class Mensa extends Activity {
 				int responseCode = httpConnection.getResponseCode();
 
 				if (responseCode == HttpURLConnection.HTTP_OK) {
-					InputStream in = (InputStream) httpConnection
+					InputStream in = httpConnection
 							.getInputStream();
 
 					Bitmap image = BitmapFactory.decodeStream(in);
@@ -385,12 +392,10 @@ public class Mensa extends Activity {
 		@Override
 		protected void onPostExecute(Bitmap result) {
 			super.onPostExecute(result);
-			
 			if (result != null) {
-				app.displayImage(result);
+				imageView.setImageBitmap(result);
 			}
-			
-			app.setProgressBarIndeterminateVisibility(false);
+			setProgressBarIndeterminateVisibility(false);
 		}
     	
     }
