@@ -67,7 +67,7 @@ public class Mensa extends Activity {
     //MENU
     private static final int MENU_REFRESH_START 	= Menu.FIRST;
     private static final int MENU_REFRESH_STOP 		= Menu.FIRST + 1;
-    private static final int MENU_REFERSH_ONCE		= Menu.FIRST + 2;
+    private static final int MENU_REFRESH_ONCE		= Menu.FIRST + 2;
     private static final int MENU_ABOUT 			= Menu.FIRST + 3;
     private static final int MENU_PREFERENCES 		= Menu.FIRST + 4;
     
@@ -85,7 +85,6 @@ public class Mensa extends Activity {
         setContentView(R.layout.main);
         
         app = (MensaApp) getApplication();
-        //app.registerActivity(this);
         
         alarms = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         String ALARM_ACTION;
@@ -157,7 +156,7 @@ public class Mensa extends Activity {
 				.setIcon(R.drawable.ic_menu_close_clear_cancel);
 		menu.add(0, MENU_REFRESH_START, Menu.NONE, R.string.refresh_start)
 				.setIcon(R.drawable.ic_menu_play_clip);
-		menu.add(0, MENU_REFERSH_ONCE, Menu.NONE, R.string.refresh_once)
+		menu.add(0, MENU_REFRESH_ONCE, Menu.NONE, R.string.refresh_once)
 				.setIcon(R.drawable.ic_menu_refresh);
 		menu.add(0, MENU_ABOUT, Menu.NONE, R.string.about)
 				.setIcon(R.drawable.ic_menu_info_details);
@@ -172,7 +171,7 @@ public class Mensa extends Activity {
     	super.onPrepareOptionsMenu(menu);
     	MenuItem refreshStart = menu.findItem(MENU_REFRESH_START);
     	MenuItem refreshStop = menu.findItem(MENU_REFRESH_STOP);
-    	MenuItem refreshOnce = menu.findItem(MENU_REFERSH_ONCE);
+    	MenuItem refreshOnce = menu.findItem(MENU_REFRESH_ONCE);
     	if (isAutoRefresh()) {
     		refreshStart.setVisible(false);
     		refreshStop.setVisible(true);
@@ -196,10 +195,13 @@ public class Mensa extends Activity {
 		case (MENU_REFRESH_STOP): {
 			stopLastGetImageTask();
 			setAutoRefresh(false);
-			unregisterReceiver(receiver);
+			try {
+				//unregisterReceiver(receiver);
+				// note: after stopping, an additional refresh happens: register and unregister receiver to stop this.
+			} catch (Exception t) {}
 			return true;
 		}
-		case (MENU_REFERSH_ONCE): {
+		case (MENU_REFRESH_ONCE): {
 			stopLastGetImageTask();
 			refreshImage();
 			return true;
@@ -241,12 +243,6 @@ public class Mensa extends Activity {
     	}
 
     	return dialogB.create();
-    }
-    
-    @Override
-    protected void onPrepareDialog(int id, Dialog dialog) {
-    	// TODO Auto-generated method stub
-    	super.onPrepareDialog(id, dialog);
     }
     
     private void checkInfoDialog() {
@@ -340,6 +336,7 @@ public class Mensa extends Activity {
     		lastGetImageTask.cancel(true);
     		lastGetImageTask = null;
     	}
+    	setProgressBarIndeterminateVisibility(false);
     }
     
     private class GetImageTask extends AsyncTask<Void, Void, Bitmap> {
