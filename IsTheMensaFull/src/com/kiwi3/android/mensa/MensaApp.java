@@ -23,33 +23,4 @@ import android.app.Application;
 public class MensaApp extends Application {
 	//private static final String TAG = "MensaApp";
 
-	/*
-	private Mensa mensaActivity;
-	
-	protected void registerActivity(Activity activity) {
-		//to be extended in case of multiple activities
-		Log.d(TAG, "registering Mensa activity");
-		mensaActivity = (Mensa) activity;
-	}
-	*/
-	
-	/*
-	protected void displayImage(Bitmap image) {
-		try {
-			mensaActivity.displayImage(image);
-		} catch (NullPointerException e) {
-			Log.w(TAG, e.getMessage());
-		}
-	}
-	
-	protected void setProgressBarIndeterminateVisibility(boolean visible) {
-		try {
-			//to be extended in case of multiple activities
-			mensaActivity.setProgressBarIndeterminateVisibility(visible);
-		} catch (NullPointerException e) {
-			Log.e(TAG, e.getMessage());
-		}
-	}
-	*/
-	
 }
