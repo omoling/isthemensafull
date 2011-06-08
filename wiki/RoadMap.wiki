@@ -29,3 +29,4 @@ Further features and improvements proposals:
 || *Version Code* || *Version Name* ||
 || 4 || 0.2 Beta ||
 || 5 || 0.2.1 Beta ||
+|| 6 || 0.2.2 Beta ||
